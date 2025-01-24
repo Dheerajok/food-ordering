@@ -5,6 +5,22 @@ import { useContext } from 'react';
 import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
 
+
+const paymentFetch = (e) => {
+  e.preventDefault();
+
+  const paymentId = e.target.paymentId.value;
+
+  axios.get(`http://localhost:4000/payment/${paymentId}`)
+  .then((response) => {
+    console.log(response.data);
+    setResponseState(response.data)
+  })
+  .catch((error) => {
+    console.log("error occures", error)
+  })
+}
+
 const Verify = () => {
 
     const [searchParams,setSearchParams] = useSearchParams();

@@ -29,6 +29,17 @@ const Orders = ({url}) => {
     }
   }
 
+  const removeFood = async(orderId) => {
+    const response = await axios.post(`${url}/api/order/remove`,{id:orderId});
+    await fetchAllOrders();
+    if (response.data.success){
+      toast.success(response.data.message)
+    }
+    else{
+      toast.error("Error")
+    }
+  }
+
 
 useEffect(()=>{
   fetchAllOrders();
@@ -38,7 +49,7 @@ useEffect(()=>{
     <div className='order add'>
       <h3>Order Page</h3>
       <div className="order-list">
-        {orders.map((order,index)=>(
+        {orders.reverse().map((order,index)=>(
           <div key={index} className='order-item'>
             <img src={assets.parcel_icon} alt="" />
             <div>
@@ -60,12 +71,15 @@ useEffect(()=>{
               <p className="order-item-phone">{order.address.phone}</p>
             </div>
             <p>Items : {order.items.length}</p>
-            <p>${order.amount}</p>
+            <p>₹{order.amount}</p>
             <select onChange={(event)=>statusHandler(event,order._id)} value={order.status}>
               <option value="Food Processing">Food Processing</option>
               <option value="Out for delivery">Out for delivery</option>
               <option value="Delivered">Delivered</option>
+              <option value="Canceled">Canceled</option>
             </select>
+            
+            <p onClick={()=>removeFood(order._id)} className='cursor'>X</p>
           </div>
         ))}
       </div>

@@ -7,7 +7,7 @@ import Razorpay from "razorpay"
 // placing user order from frontend
 const placeOrder = async (req, res) => {
 
-    const frontend_url = "http://localhost:5173";
+    const frontend_url = "https://food-ordering-1-xhsa.onrender.com";
 
     const newOrder = new orderModel({
         userId: req.body.userId,
@@ -27,7 +27,10 @@ const placeOrder = async (req, res) => {
             key_secret: "o0vJZVUjeahh2dexZkvGbTRv"
         })
 
+        console.log(req.body.amount); 
+              
         const options = {
+            
             amount: req.body.amount * 100,
             currency: req.body.currency,
             receipt: req.body.userId,

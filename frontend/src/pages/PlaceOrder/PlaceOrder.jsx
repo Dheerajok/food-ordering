@@ -6,6 +6,11 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
 
+
+
+// const [responseId, setResponseId] = useState("")
+
+
 const loadScript = (src) => {
   return new Promise((resolve) => {
     const script = document.createElement("script");
@@ -24,7 +29,7 @@ const loadScript = (src) => {
 }
 
 
-const handleRazorpayScreen = async (amount) => {
+const handleRazorpayScreen = async (amount,orderId,navigate) => {
   const res = await loadScript("https:/checkout.razorpay.com/v1/checkout.js")
 
   if (!res) {
@@ -33,14 +38,25 @@ const handleRazorpayScreen = async (amount) => {
   }
 
   const options = {
-    key: 'rzp_test_5FuzPjp8yygxhW',
+    key: "rzp_test_5FuzPjp8yygxhW",
     amount: amount,
     currency: 'INR',
     name: "Agrawal Bekery",
     description: "payment to Agrawal Bekery",
     image: "https://papayacoders.com/demo.png",
     handler: function (response) {
-      setResponseId(response.razorpay_payment_id)
+      
+      console.log("Payment successful:", response);
+
+      if(response){
+
+        navigate(`/verify?status=true&orderId=${orderId}&paymentId=${response.razorpay_payment_id}}`);
+
+      }else{
+        navigate(`/verify?status=false&orderId=${orderId}}`);
+      }
+      
+      
     },
     prefill: {
       name: "Agrawal Bekery ",
@@ -48,7 +64,7 @@ const handleRazorpayScreen = async (amount) => {
     },
     theme: {
       color: "#F4C430"
-    }
+    },
   }
 
   const paymentObject = new window.Razorpay(options)
@@ -58,7 +74,11 @@ const handleRazorpayScreen = async (amount) => {
 
 const PlaceOrder = () => {
 
-  const { getTotalCartAmount, token, food_list, cartItems, url } = useContext(StoreContext)
+  const navigate = useNavigate();
+
+  const { getTotalCartAmount,removeFromCart, token, food_list, cartItems, url , } = useContext(StoreContext)
+
+
 
   const [data, setData] = useState({
     firstName: "",
@@ -90,33 +110,6 @@ const PlaceOrder = () => {
     })
 
 
-    // let data = JSON.stringify({
-    //   amount: amount * 100,
-    //   currency: "INR"
-    // })
-
-    // let config = {
-    //   method: "post",
-    //   maxBodyLength: Infinity,
-    //   url: "http://localhost:4000/place",
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   data: data
-    // }
-
-
-    // .then((response) => {
-    //   console.log(JSON.stringify(response.data))
-    //   handleRazorpayScreen(response.data.amount)
-    // })
-    // .catch((error) => {
-    //   console.log("error at", error)
-    // })
-
-
-
-
 
     let orderData = {
       address: data,
@@ -125,9 +118,15 @@ const PlaceOrder = () => {
       currency: "INR"
     }
     let response = await axios.post(url + "/api/order/place", orderData, { headers: { token } })
+
+    console.log(response)
+
+    
+    
     if (response.data.success) {
 
-      handleRazorpayScreen(response.data.amount)
+    
+      handleRazorpayScreen(response.data.amount,response.data.order_id,navigate)
 
 
     }
@@ -136,7 +135,7 @@ const PlaceOrder = () => {
     }
   }
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
 
   useEffect(() => {

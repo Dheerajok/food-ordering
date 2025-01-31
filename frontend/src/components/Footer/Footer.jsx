@@ -9,7 +9,7 @@ const Footer = () => {
       <div className="footer-content">
         <div className="footer-content-left">
             <img className='tomatologofooter' src={assets.logo} alt="" />
-            <p>This website is just for my portfolio, it's not a real website.</p>
+            <p>This website is created by @dheerajok</p>
             <div className="footer-social-icons">
             <img src={assets.facebook_icon} alt="" />
               <img src={assets.twitter_icon} alt="" />
@@ -28,13 +28,13 @@ const Footer = () => {
         <div className="footer-content-right">
             <h2>GET IN TOUCH</h2>
             <ul>
-              <li>+1-212-456-7890</li>
-              <li>contact@tomato.com</li>
+              <li>+91 9827228690</li>
+              <li>contact@agrawal.com</li>
             </ul>
         </div>
       </div>
       <hr/>
-      <p className='footer-copyright'>Copyright 2024 © Tomato.com - All rights reserved.</p>
+      <p className='footer-copyright'>Copyright 2024 © AgarwalBakery.com - All rights reserved.</p>
     </div>
   )
 }

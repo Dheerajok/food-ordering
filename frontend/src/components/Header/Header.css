@@ -66,5 +66,6 @@
     }
     .header-contents button{
         padding: 2vw 4vw;
+        display: none;
     }
 }

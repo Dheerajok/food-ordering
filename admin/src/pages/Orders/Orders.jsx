@@ -81,7 +81,7 @@ useEffect(()=>{
               <option value="Canceled">Canceled</option>
             </select>
             
-            <p onClick={()=>removeFood(order._id)} className='cursor'>X</p>
+            <p onClick={()=>removeFood(order._id)} className='cursor'>{order.orderId} X</p>
           </div>
         ))}
       </div>

@@ -41,7 +41,7 @@ const LoginPopup = ({setShowLogin}) => {
       setShowLogin(false)
     }
     else{
-      alert(res.data.message)
+      alert(response.data.message)
     }
 
   }

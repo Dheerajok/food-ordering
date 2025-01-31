@@ -6,31 +6,34 @@ import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
 
 
-const paymentFetch = (e) => {
-  e.preventDefault();
+// const paymentFetch = (e) => {
+//   e.preventDefault();
 
-  const paymentId = e.target.paymentId.value;
+//   const paymentId = e.target.paymentId.value;
 
-  axios.get(`http://localhost:4000/payment/${paymentId}`)
-  .then((response) => {
-    console.log(response.data);
-    setResponseState(response.data)
-  })
-  .catch((error) => {
-    console.log("error occures", error)
-  })
-}
+//   axios.get(`http://localhost:4000/payment/${paymentId}`)
+//   .then((response) => {
+//     console.log(response.data);
+//     setResponseState(response.data)
+//   })
+//   .catch((error) => {
+//     console.log("error occures", error)
+//   })
+// }
 
 const Verify = () => {
 
+
     const [searchParams,setSearchParams] = useSearchParams();
-    const success = searchParams.get("success")
+    const status = searchParams.get("status")
     const orderId = searchParams.get("orderId")
+    const paymentId = searchParams.get("paymentId")
+
     const {url} = useContext(StoreContext);
     const navigate = useNavigate();
 
     const verifyPayment = async () => {
-        const response = await axios.post(url+"/api/order/verify",{success,orderId});
+        const response = await axios.post(url+"/api/order/verify",{status,orderId,paymentId});
         if (response.data.success){
             navigate("/myorders");
         }
